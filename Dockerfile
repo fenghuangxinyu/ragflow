@@ -1,5 +1,5 @@
 # base stage
-FROM ubuntu:22.04 AS base
+FROM registry.cn-hangzhou.aliyuncs.com/library/ubuntu:22.04 AS base
 USER root
 SHELL ["/bin/bash", "-c"]
 
@@ -11,7 +11,7 @@ WORKDIR /ragflow
 
 # Copy models downloaded via download_deps.py
 RUN mkdir -p /ragflow/rag/res/deepdoc /root/.ragflow
-RUN --mount=type=bind,from=infiniflow/ragflow_deps:latest,source=/huggingface.co,target=/huggingface.co \
+RUN--mount=type=bind,from=registry.cn-hangzhou.aliyuncs.com/infiniflow/ragflow_deps:latest,source=/huggingface.co,target=/huggingface.co \
     cp /huggingface.co/InfiniFlow/huqie/huqie.txt.trie /ragflow/rag/res/ && \
     tar --exclude='.*' -cf - \
         /huggingface.co/InfiniFlow/text_concat_xgb_v1.0 \
@@ -91,7 +91,7 @@ RUN apt update && apt install -y curl build-essential \
          echo "Using TUNA mirrors for Rustup."; \
        fi; \
     # Force curl to use HTTP/1.1
-    curl --proto '=https' --tlsv1.2 --http1.1 -sSf https://sh.rustup.rs | bash -s -- -y --profile minimal \
+    curl --proto '=https' --tlsv1.2 --http1.1 -sSf https://mirrors.tuna.tsinghua.edu.cn/rustup.sh | bash -s -- -y --profile minimal \
     && echo 'export PATH="/root/.cargo/bin:${PATH}"' >> /root/.bashrc
 
 ENV PATH="/root/.cargo/bin:${PATH}"
